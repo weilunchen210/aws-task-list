@@ -8,6 +8,8 @@ aws:
   region:
   dynamodb:
     endpoint:
+    tableName:
+      task:
 management:
   endpoints:
     web:
