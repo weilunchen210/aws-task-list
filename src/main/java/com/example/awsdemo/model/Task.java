@@ -11,7 +11,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class Task{
 
     @Getter(onMethod_ = @DynamoDbPartitionKey)
     private String taskId;
@@ -20,7 +20,7 @@ public class Task {
 
     private String description;
 
-    private String taskStatus;
+    private TaskStatus taskStatus;
 
     private String createdBy;
 
