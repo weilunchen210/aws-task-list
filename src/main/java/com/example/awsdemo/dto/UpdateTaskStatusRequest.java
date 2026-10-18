@@ -1,5 +1,6 @@
 package com.example.awsdemo.dto;
 
+import com.example.awsdemo.model.TaskStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateTaskStatusRequest {
     private long taskId;
-    private String status;
+    private TaskStatus status;
+    private long createdBy;
 }

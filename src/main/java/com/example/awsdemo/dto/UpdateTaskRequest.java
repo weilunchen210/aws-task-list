@@ -9,4 +9,5 @@ public class UpdateTaskRequest {
     private long taskId;
     private String title;
     private String description;
+    private long createdBy;
 }

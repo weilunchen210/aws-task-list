@@ -16,7 +16,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecon
 public class Task{
 
     @Getter(onMethod_ = @DynamoDbPartitionKey)
-    private String taskId;
+    private Long taskId;
 
     private String title;
 
@@ -25,7 +25,7 @@ public class Task{
     private TaskStatus taskStatus;
 
     @Getter(onMethod_ = @DynamoDbSecondaryPartitionKey(indexNames = "createdBy-createdDate-index"))
-    private String createdBy;
+    private Long createdBy;
 
     @Getter(onMethod_ = @DynamoDbSecondarySortKey(indexNames = "createdBy-createdDate-index"))
     private String createdDate;

@@ -3,9 +3,9 @@ package com.example.awsdemo.controller;
 import com.example.awsdemo.dto.*;
 import com.example.awsdemo.service.TaskService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import software.amazon.awssdk.services.dynamodb.model.Update;
 
 @RestController
 @Component
@@ -33,28 +33,37 @@ public class TaskController {
         taskService.createTask(createTaskRequest);
     }
 
-    @PostMapping(value="/v1/update/{taskId}")
-    public void updateTask(
+    @PutMapping(value="/v1/update/{taskId}")
+    public ResponseEntity<Void> updateTask(
             @PathVariable long taskId,
+            @RequestParam long createdBy,
             @RequestBody UpdateTaskRequest updateTaskRequest
     ) {
         updateTaskRequest.setTaskId(taskId);
-        taskService.updateTask(updateTaskRequest);
+        updateTaskRequest.setCreatedBy(createdBy);
+        return toResponse(taskService.updateTask(updateTaskRequest));
     }
 
-    @PutMapping(value="/v1/update-status/{taskId}")
-    public void updateTaskStatus(
+    @PatchMapping(value="/v1/update-status/{taskId}")
+    public ResponseEntity<Void> updateTaskStatus(
             @PathVariable long taskId,
+            @RequestParam long createdBy,
             @RequestBody UpdateTaskStatusRequest updateTaskStatusRequest
     ) {
         updateTaskStatusRequest.setTaskId(taskId);
-        taskService.updateTaskStatus(updateTaskStatusRequest);
+        updateTaskStatusRequest.setCreatedBy(createdBy);
+        return toResponse(taskService.updateTaskStatus(updateTaskStatusRequest));
     }
 
     @DeleteMapping(value="/v1/delete/{taskId}")
-    public void deleteTask(
-            @PathVariable long taskId
+    public ResponseEntity<Void> deleteTask(
+            @PathVariable long taskId,
+            @RequestParam long createdBy
     ) {
-        taskService.deleteTask(updateTaskStatusRequest);
+        return toResponse(taskService.deleteTask(taskId, createdBy));
+    }
+
+    private ResponseEntity<Void> toResponse(boolean found) {
+        return found ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
