@@ -1,0 +1,15 @@
+# application.yml
+spring:
+  application:
+    name: awsdemo
+server:
+  port:
+aws:
+  region:
+  dynamodb:
+    endpoint:
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
