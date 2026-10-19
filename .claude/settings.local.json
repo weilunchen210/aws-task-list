@@ -3,7 +3,13 @@
     "allow": [
       "Bash(curl -s https://repo1.maven.org/maven2/software/amazon/awssdk/bom/maven-metadata.xml)",
       "Bash(git check-ignore *)",
-      "Bash(echo \"exit=$?\")"
+      "Bash(echo \"exit=$?\")",
+      "PowerShell(aws ecs describe-clusters --clusters awsdemo --region ap-southeast-1 --query \"clusters[].{name:clusterName,status:status,running:runningTasksCount}\" --output json)",
+      "PowerShell(aws ecr describe-images --repository-name awsdemo --region ap-southeast-1 --query \"imageDetails[].{tags:imageTags,pushed:imagePushedAt}\" --output json)",
+      "PowerShell(aws ecr describe-repositories --region ap-southeast-1 --query \"repositories[].repositoryName\" --output text)",
+      "PowerShell(aws ecr describe-images --repository-name awsdemo --region ap-southeast-1 --query \"imageDetails[].{tags:imageTags,pushed:imagePushedAt,sizeMB:imageSizeInBytes}\" --output json)",
+      "PowerShell(aws ecs list-clusters --region ap-southeast-1 --output text)",
+      "PowerShell(Set-Location C:\\\\Users\\\\weilu\\\\Documents\\\\Code\\\\awsdemo; .\\\\mvnw.cmd -q compile 2>&1 | Select-String \"ERROR\" | Select-Object -First 10; \"exit=$LASTEXITCODE\")"
     ]
   }
 }

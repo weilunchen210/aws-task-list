@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClientBuilder;
 
 import java.net.URI;
 
@@ -15,18 +16,21 @@ public class DynamoConfig {
     @Value("${aws.region}")
     private String region;
 
-    @Value("${aws.dynamodb.endpoint}")
+    @Value("${aws.dynamodb.endpoint:}")
     private String dynamoDbEndpoint;
 
     @Bean
     public DynamoDbEnhancedClient dynamoDbEnhancedClient() {
-        DynamoDbClient dbClient = DynamoDbClient.builder()
-                .region(Region.of(region))
-                .endpointOverride(URI.create(dynamoDbEndpoint)) // Use the local DynamoDB endpoint
-                .build();
+        DynamoDbClientBuilder builder = DynamoDbClient.builder()
+                .region(Region.of(region));
+
+        // Only override for DynamoDB Local; when empty (on ECS) use real DynamoDB with the task role's credentials
+        if (dynamoDbEndpoint != null && !dynamoDbEndpoint.isBlank()) {
+            builder.endpointOverride(URI.create(dynamoDbEndpoint));
+        }
 
         return DynamoDbEnhancedClient.builder()
-                .dynamoDbClient(dbClient)
+                .dynamoDbClient(builder.build())
                 .build();
     }
 }
